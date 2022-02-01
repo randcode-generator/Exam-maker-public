@@ -1,0 +1,46 @@
+<app-loader-screen *ngIf="showLoader"></app-loader-screen>
+<h2>Take Exam</h2>
+<form class="example-form" [formGroup]="examSelectForm" (ngSubmit)="onTakeExam()">
+  <table>
+    <tr>
+      <td>
+        <mat-form-field appearance="fill">
+          <mat-label>Exam</mat-label>
+          <mat-select formControlName="examName" (selectionChange) = "examSelected()">
+            <mat-option *ngFor="let exam of examsArr" [value]="exam">
+              {{exam}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+  <mat-form-field appearance="fill">
+    <mat-label>Version</mat-label>
+    <mat-select formControlName="versions">
+      <mat-option *ngFor="let version of versionsArr" [value]="version">
+        {{version}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="example-button-row">
+    <button mat-raised-button type="submit">Take Exam</button>
+  </div>
+</form>
+
+<div *ngIf="showExam">
+  <form class="example-form" [formGroup]="examForm" (ngSubmit)="onSubmitExam()">
+    <div *ngFor="let question of examToTake.questions; let i = index" formArrayName="answers">
+      <h5>{{i+1}}. {{question.question}}</h5>
+      <mat-radio-group class="example-radio-group" [formControlName] = "i">
+        <mat-radio-button class="example-radio-button" 
+          *ngFor="let key of question.shuffled_keys" [value]="key">
+          {{question.answers[key]}}
+        </mat-radio-button>
+      </mat-radio-group>
+    </div>
+    <div class="example-button-row">
+      <button mat-raised-button type="submit">Submit Exam</button>
+    </div>
+  </form>
+</div>

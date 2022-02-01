@@ -1,0 +1,14 @@
+<app-loader-screen *ngIf="showLoader"></app-loader-screen>
+<form class="example-form" [formGroup]="checkoutForm" (ngSubmit)="onAddGroup()">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Group Name</mat-label>
+    <input matInput formControlName="name">
+  </mat-form-field>
+  <br>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Group Description</mat-label>
+    <input matInput formControlName="description">
+  </mat-form-field>
+  <br>
+  <button mat-raised-button type="submit">Add Group</button>
+</form>

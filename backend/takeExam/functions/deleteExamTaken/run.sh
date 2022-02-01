@@ -1,0 +1,1 @@
+gcloud functions deploy deleteExamTaken --runtime nodejs16 --trigger-http --allow-unauthenticated

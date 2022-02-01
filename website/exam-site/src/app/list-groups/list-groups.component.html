@@ -1,0 +1,14 @@
+<app-loader-screen *ngIf="showLoader"></app-loader-screen>
+<h2>Manage Groups</h2>
+<button mat-raised-button (click)="onAddGroup()">Add Group</button>
+<br>
+<br>
+<mat-list>
+  <mat-list-item *ngFor="let group of groups">
+    <mat-icon style="width:10px;" mat-list-icon (click)="onDelete(group.name)">delete</mat-icon>
+    <div mat-line>{{ group.name }}</div>
+    <div mat-line> {{ group.description }} </div>
+  </mat-list-item>
+</mat-list>
+
+<h3 *ngIf="showError">{{errorMessage}}</h3>

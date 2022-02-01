@@ -1,0 +1,16 @@
+#loader {
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  margin: 0px;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  background-color: gray;
+  opacity: 50%;
+}
+
+.centerWidget {
+  left: 35%;
+  top: 35%;
+}

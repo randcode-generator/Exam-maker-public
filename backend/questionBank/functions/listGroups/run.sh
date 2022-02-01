@@ -1,0 +1,1 @@
+gcloud functions deploy listGroups --runtime nodejs16 --trigger-http --allow-unauthenticated

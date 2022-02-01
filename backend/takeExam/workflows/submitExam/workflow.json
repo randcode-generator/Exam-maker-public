@@ -1,0 +1,34 @@
+{
+    "main": {
+      "params": [
+        "args"
+      ],
+      "steps": [
+        {
+          "gradeExam": {
+            "call": "http.post",
+            "args": {
+              "url": "<FUNCTIONSURL>/grader",
+              "body": "${args}"
+            },
+            "result": "examGradedJson"
+          }
+        },
+        {
+            "submitExam": {
+              "call": "http.post",
+              "args": {
+                "url": "<FUNCTIONSURL>/submitExam",
+                "body": "${examGradedJson.body}"
+              },
+              "result": "status"
+            }
+        },
+        {
+          "return_result": {
+            "return": "${status}"
+          }
+        }
+      ]
+    }
+  }

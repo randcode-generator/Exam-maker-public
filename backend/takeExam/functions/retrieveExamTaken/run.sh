@@ -1,0 +1,1 @@
+gcloud functions deploy retrieveExamTaken --runtime nodejs16 --trigger-http --allow-unauthenticated

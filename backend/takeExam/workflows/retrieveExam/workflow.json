@@ -1,0 +1,49 @@
+{
+    "main": {
+      "params": [
+        "args"
+      ],
+      "steps": [
+        {
+          "retrieveExam": {
+            "call": "http.post",
+            "args": {
+              "url": "<FUNCTIONSURL>/retrieveExam",
+              "body": {
+                "examName": "${args.examName}",
+                "version": "${args.version}"
+              }
+            },
+            "result": "examJson"
+          }
+        },
+        {
+          "retrieveExamQuestion": {
+            "call": "http.post",
+            "args": {
+              "url": "<FUNCTIONSURL>/retrieveExamQuestions",
+              "body": {
+                "examWithQuestions": "${examJson.body}"
+              }
+            },
+            "result": "examWithQuestionJson"
+          }
+        },
+        {
+          "shuffleAnswer": {
+            "call": "http.post",
+            "args": {
+              "url": "<FUNCTIONSURL>/shuffleAnswers",
+              "body": "${examWithQuestionJson.body}"
+            },
+            "result": "examWithQuestionShuffledJson"
+          }
+        },
+        {
+          "return_result": {
+            "return": "${examWithQuestionShuffledJson.body}"
+          }
+        }
+      ]
+    }
+  }

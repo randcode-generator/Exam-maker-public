@@ -1,0 +1,15 @@
+<app-loader-screen *ngIf="showLoader"></app-loader-screen>
+
+<div *ngIf="showExam">
+  <h3>Version {{examResult.version}}</h3>
+  <div *ngFor="let questions of examResult.questions; let i = index">
+    <h3>{{i+1}}. {{questions.question}}</h3>
+    <mat-radio-group class="example-radio-group">
+      <mat-radio-button class="example-radio-button" disabled="true"
+        *ngFor="let key of questions.shuffledKeys" [value]="key"
+        [checked]="key == questions.answer">
+        {{questions.answers[key]}}
+      </mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>

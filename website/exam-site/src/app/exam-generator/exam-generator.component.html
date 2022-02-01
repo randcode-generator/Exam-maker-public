@@ -1,0 +1,65 @@
+<app-loader-screen *ngIf="showLoader"></app-loader-screen>
+<h2>Generate Exam</h2>
+<form class="example-form" [formGroup]="checkoutForm" (ngSubmit)="onGenerateExam()">
+  <table>
+    <tr>
+      <td>
+        <mat-form-field appearance="fill">
+          <mat-label>Version</mat-label>
+          <mat-select formControlName="versions">
+            <mat-option *ngFor="let version of versionsArr" [value]="version">
+              {{version}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <h3>Group</h3>
+        <div formArrayName="groups">
+          <div *ngFor="let group of groups; index as i">
+            <mat-checkbox [formControlName] = "i">{{ group }}</mat-checkbox>
+          </div>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div class="example-button-row">
+          <button mat-raised-button type="submit">Generate Exam</button>
+        </div>
+      </td>
+    </tr>
+  </table>
+  <br>
+  <div *ngIf="showExam">
+    <table>
+      <tr>
+        <td>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Name of Exam</mat-label>
+            <input matInput formControlName="examName">
+          </mat-form-field>
+        </td>
+        <td>
+          <div class="example-button-row">
+            <button mat-raised-button type="button" (click)="onSaveExam()">Save Exam</button>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <div *ngFor="let version of versionsExam; let i = index">
+      <h3>Version {{ i + 1 }}</h3>
+      <div *ngFor="let exam of version">
+        <h3>{{exam.question}}</h3>
+        <mat-radio-group class="example-radio-group">
+          <mat-radio-button class="example-radio-button" 
+            *ngFor="let answer of exam.answers | keyvalue" [value]="answer.key">
+            {{answer.value}}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+  </div>
+</form>

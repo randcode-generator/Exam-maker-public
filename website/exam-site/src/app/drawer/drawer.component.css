@@ -1,0 +1,11 @@
+.drawer {
+  width: 200px;
+}
+.content {
+  padding-left: 10px;
+  padding-top: 10px;
+}
+.example-container {
+  width: 100%;
+  height: 90%;
+}

@@ -1,0 +1,1 @@
+gcloud functions deploy shuffleAnswers --runtime nodejs16 --trigger-http --allow-unauthenticated

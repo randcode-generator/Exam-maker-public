@@ -1,0 +1,34 @@
+{
+    "main": {
+      "params": [
+        "args"
+      ],
+      "steps": [
+        {
+          "retrieveExamTaken": {
+            "call": "http.post",
+            "args": {
+              "url": "<FUNCTIONSURL>/retrieveExamTaken",
+              "body": "${args}"
+            },
+            "result": "examJson"
+          }
+        },
+        {
+          "passFail": {
+            "call": "http.post",
+            "args": {
+              "url": "<FUNCTIONSURL>/passFail",
+              "body":  "${examJson.body}"
+            },
+            "result": "examWithPassFail"
+          }
+        },
+        {
+          "return_result": {
+            "return": "${examWithPassFail.body}"
+          }
+        }
+      ]
+    }
+  }
