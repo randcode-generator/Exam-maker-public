@@ -1,0 +1,25 @@
+main:
+  params: [args]
+  steps:
+    - assignValue:
+        assign:
+          - groupList: ${args.groups}
+          - exam: []
+    - forLoops:
+        for:
+            value: group
+            in: ${groupList}
+            steps:
+                - http_get:
+                    call: http.get
+                    args:
+                        url: <FUNCTIONSURL>/getQuestion
+                        query:
+                            group: ${group}
+                    result: question
+                - appendQuestion:
+                    assign:
+                        - exam: ${list.concat(exam, question.body)}
+    - return_result:
+        return: ${exam}
+

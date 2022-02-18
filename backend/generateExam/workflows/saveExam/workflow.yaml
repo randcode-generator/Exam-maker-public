@@ -1,0 +1,18 @@
+main:
+  params: [args]
+  steps:
+    - assignValue:
+        assign:
+          - savedExam: ${args.savedExam}
+    - forLoops:
+        for:
+            value: exam
+            in: ${savedExam}
+            steps:
+                - http_post:
+                    call: http.post
+                    args:
+                        url: <FUNCTIONSURL>/saveExam
+                        body:
+                            exam: ${exam}
+

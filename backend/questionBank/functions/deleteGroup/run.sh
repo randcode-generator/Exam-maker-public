@@ -1,0 +1,1 @@
+gcloud functions deploy deleteGroup --runtime nodejs16 --trigger-http --allow-unauthenticated

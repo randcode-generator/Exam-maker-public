@@ -1,0 +1,40 @@
+<app-loader-screen *ngIf="showLoader"></app-loader-screen>
+<h4>Exams Available</h4>
+<mat-selection-list [multiple]="false" *ngFor="let e of examList">
+  <mat-list-option >
+    <table>
+      <tr>
+        <td style="width:10px;">
+          <mat-icon (click)="onDeleteExam(e.examName)">delete</mat-icon>
+        </td>
+        <td>
+          <span (click)="viewExamAllVersion(e.examName)">
+            {{e.examName}}
+          </span>
+        </td>
+      </tr>
+    </table>
+  </mat-list-option>
+  <mat-divider></mat-divider>
+</mat-selection-list>
+
+<h4>Exams Taken</h4>
+<mat-selection-list [multiple]="false" *ngFor="let e of examTakenList">
+  <mat-list-option >
+    <table>
+      <tr>
+        <td style="width:10px;">
+          <mat-icon (click)="onDeleteExamTaken(e.examName)">delete</mat-icon>
+        </td>
+        <td>
+          <span (click)="viewExam(e.examName)">
+            {{e.examName}} &nbsp;&nbsp;&nbsp;&nbsp; 
+            Grade: {{e.grade * 100}} &nbsp;&nbsp;&nbsp;&nbsp;
+            Pass/Fail: {{e.passed == true ? 'Passed': 'Failed'}}
+          </span>
+        </td>
+      </tr>
+    </table>
+  </mat-list-option>
+  <mat-divider></mat-divider>
+<mat-selection-list>

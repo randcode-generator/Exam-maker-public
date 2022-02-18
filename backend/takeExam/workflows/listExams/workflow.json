@@ -1,0 +1,46 @@
+{
+    "main": {
+      "params": [
+        "args"
+      ],
+      "steps": [
+        {
+          "listExams": {
+            "call": "http.get",
+            "args": {
+              "url": "<FUNCTIONSURL>/listExams"
+            },
+            "result": "examsList"
+          }
+        },
+        {
+          "retrieveExamTaken": {
+            "call": "http.post",
+            "args": {
+              "url": "<FUNCTIONSURL>/retrieveExamTaken",
+              "body": "${args}"
+            },
+            "result": "retrieveExamTaken"
+          }
+        },
+        {
+          "filterExamTaken": {
+            "call": "http.post",
+            "args": {
+              "url": "<FUNCTIONSURL>/filterExamTaken",
+              "body": {
+                "allExam": "${examsList}",
+                "examTaken":"${retrieveExamTaken}"
+              }
+            },
+            "result": "filterExamTaken"
+          }
+        },
+        {
+          "return_result": {
+            "return": "${filterExamTaken.body}"
+          }
+        }
+      ]
+    }
+  }

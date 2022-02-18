@@ -1,0 +1,32 @@
+<app-loader-screen *ngIf="showLoader"></app-loader-screen>
+<form class="example-form" [formGroup]="checkoutForm" (ngSubmit)="onAddQuestion()">
+  <mat-form-field appearance="fill">
+    <mat-label>Groups</mat-label>
+    <mat-select formControlName="group">
+      <mat-option *ngFor="let group of groups" [value]="group.name">
+        {{group.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Question</mat-label>
+    <input matInput formControlName="question">
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Answer1 (correct answer)</mat-label>
+    <input matInput formControlName="answer1">
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Answer2</mat-label>
+    <input matInput formControlName="answer2">
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Answer3</mat-label>
+    <input matInput formControlName="answer3">
+  </mat-form-field>
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Answer4</mat-label>
+    <input matInput formControlName="answer4">
+  </mat-form-field>
+  <button mat-raised-button type="submit">Add Question</button>
+</form>

@@ -1,0 +1,39 @@
+{
+    "main": {
+      "params": [
+        "args"
+      ],
+      "steps": [
+        {
+          "retrieveResults": {
+            "call": "http.post",
+            "args": {
+              "url": "<FUNCTIONSURL>/retrieveResults",
+              "body": {
+                "examName": "${args.examName}",
+                "userid": "${args.userid}"
+              }
+            },
+            "result": "examJson"
+          }
+        },
+        {
+          "retrieveExamQuestion": {
+            "call": "http.post",
+            "args": {
+              "url": "<FUNCTIONSURL>/retrieveExamQuestions",
+              "body": {
+                "examWithQuestions": "${examJson.body}"
+              }
+            },
+            "result": "examWithQuestionJson"
+          }
+        },
+        {
+          "return_result": {
+            "return": "${examWithQuestionJson.body}"
+          }
+        }
+      ]
+    }
+  }
