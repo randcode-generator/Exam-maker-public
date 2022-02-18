@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, forkJoin } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { globalConstants } from '../globalConstants';
 import { listExamInterface } from '../listExamInterface';
@@ -28,16 +28,20 @@ export class ListAllVersionExamComponent extends loaderInterface implements OnIn
     let t = this.http.post<[listExamInterface]>(
       globalConstants.listExamUrl, {"userid": this.authService.getUserID()});
     let examInfo:[listExamInterface] = await firstValueFrom(t);
+    let httpCalls = [];
     for (let e of examInfo) {
       if(e.examName == examName) {
         for(let c = 1; c <= e.versions; c++) {
           let t1 = this.http.post<takeExamInterface>(globalConstants.retrieveExamUrl, 
             {"examName":e.examName, "version": c});
-          let exam1 = await firstValueFrom(t1);
-          this.versions.push(exam1);
-          console.log(exam1)
+          httpCalls.push(t1);
         }
-        this.showLoader = false;
+        forkJoin(httpCalls).subscribe(vals => {
+          for (let v of vals) {
+            this.versions.push(v);
+          }
+          this.showLoader = false;
+        });
         break;
       }
     }

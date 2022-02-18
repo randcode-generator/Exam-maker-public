@@ -17,6 +17,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAnalyticsModule, ScreenTrackingService } from '@angular/fire/compat/analytics';
 import { environment } from '../environments/environment';
 import { LoginComponent } from './login/login.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -69,10 +70,11 @@ import { ListAllVersionExamComponent } from './list-all-version-exam/list-all-ve
     FormsModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAnalyticsModule,
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [ScreenTrackingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

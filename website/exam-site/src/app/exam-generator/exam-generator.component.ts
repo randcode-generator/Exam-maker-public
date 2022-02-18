@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormArray, FormControl } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { questionsInterface } from '../questionsInterface';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, forkJoin, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { groupsInterface } from '../groupsInterface';
 import { loaderInterface } from '../loaderInterface';
@@ -82,12 +82,17 @@ export class ExamGeneratorComponent extends loaderInterface implements OnInit {
     }
 
     this.versionsExam = [];
+    let httpCalls = [];
     for (let i = 0; i < this.checkoutForm.value.versions; i++) {
       let t = this.http.post<questionsInterface[]>(globalConstants.generateExamUrl, {"groups":groups2});
-      
-      this.versionsExam.push(await firstValueFrom(t));
+      httpCalls.push(t);
     }
-    console.log(this.versionsExam);
-    this.showLoader = false;
+
+    forkJoin(httpCalls).subscribe(vals => {
+      console.log(vals);
+      for (let v of vals)
+        this.versionsExam.push(v);
+      this.showLoader = false;
+    });
   }
 }

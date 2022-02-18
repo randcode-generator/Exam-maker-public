@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, forkJoin } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { globalConstants } from '../globalConstants';
 import { listExamInterface } from '../listExamInterface';
@@ -23,14 +23,17 @@ export class TeacherComponent extends loaderInterface implements OnInit {
   }
 
   async ngOnInit() {
-    let t = this.http.post(globalConstants.retrieveExamTakenUrl, 
-      {"userid": this.authService.getUserID() }, globalConstants.httpOptions);
-    this.examTakenList = await firstValueFrom(t);
-    let t1 = this.http.post<[listExamInterface]>(
-      globalConstants.listExamUrl, {"userid": this.authService.getUserID()});
-    this.examList = await firstValueFrom(t1);
-    console.log(this.examList)
-    this.showLoader = false;
+    forkJoin([
+      this.http.post(globalConstants.retrieveExamTakenUrl, 
+        {"userid": this.authService.getUserID() }, globalConstants.httpOptions),
+      this.http.post<[listExamInterface]>(
+        globalConstants.listExamUrl, {"userid": this.authService.getUserID()})
+    ]).subscribe(vals => {
+      console.log(vals);
+      this.examTakenList = vals[0];
+      this.examList = vals[1];
+      this.showLoader = false;
+    });
   }
 
   viewExam(examName:string) {

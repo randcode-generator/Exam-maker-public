@@ -12,6 +12,28 @@ function sleep(ms) {
   });
 }
 
+function workflowsCallPoll(executionId, res, name, token) {
+  const promise1 = new Promise(async (resFun, _) => {
+    let executionResp2;
+    for (let i = 0; i < 9000; i++) {
+      const resp2 = await fetch("<WORKFLOWURL>/" + name + "/executions/"+executionId, {
+          method: "GET",
+          headers: {
+              "Authorization": `Bearer ${token}`,
+              "Content-Type": "application/json"
+          }
+      });
+      executionResp2 = await resp2.json();
+      await sleep(100);
+      if(executionResp2.state == 'SUCCEEDED') {
+        break;
+      }
+    }
+    resFun(executionResp2);
+  });
+  
+  promise1.then(executionResp2 => res.json(JSON.parse(executionResp2.result)));
+}
 async function workflowsCall(req, name) {
   let args = {"argument": JSON.stringify(req.body)};
   const auth = new GoogleAuth();
@@ -26,23 +48,7 @@ async function workflowsCall(req, name) {
   });
   const executionResp = await resp.json();
   const executionId = executionResp.name.slice(-36);
-
-  let executionResp2;
-  for (let i = 0; i < 9000; i++) {
-    const resp2 = await fetch("<WORKFLOWURL>/" + name + "/executions/"+executionId, {
-        method: "GET",
-        headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-        }
-    });
-    executionResp2 = await resp2.json();
-    await sleep(100);
-    if(executionResp2.state == 'SUCCEEDED') {
-      break;
-    }
-  }
-  return executionResp2;
+  return {executionId, token};
 }
 
 async function functionsCall(req, name) {
@@ -59,8 +65,9 @@ async function functionsCall(req, name) {
 }
 
 app.post('/generateExam', async (req, res) => {
-  let executionResp2 = await workflowsCall(req, 'generateExam');
-  res.json(JSON.parse(executionResp2.result));
+  let name = 'generateExam';
+  let {executionId, token} = await workflowsCall(req, name);
+  workflowsCallPoll(executionId, res, name, token);
 });
 
 app.post('/saveExam', async (req, res) => {
@@ -69,28 +76,33 @@ app.post('/saveExam', async (req, res) => {
 });
 
 app.post('/retrieveResults', async (req, res) => {
-  let executionResp2 = await workflowsCall(req, 'retrieveResults');
-  res.json(JSON.parse(executionResp2.result));
+  let name = 'retrieveResults';
+  let {executionId, token} = await workflowsCall(req, name);
+  workflowsCallPoll(executionId, res, name, token);
 });
 
 app.post('/retrieveExam', async (req, res) => {
-  let executionResp2 = await workflowsCall(req, 'retrieveExam');
-  res.json(JSON.parse(executionResp2.result));
+  let name = 'retrieveExam';
+  let {executionId, token} = await workflowsCall(req, name);
+  workflowsCallPoll(executionId, res, name, token);
 });
 
 app.post('/submitExam', async (req, res) => {
-  let executionResp2 = await workflowsCall(req, 'submitExam');
-  res.json(JSON.parse(executionResp2.result));
+  let name = 'submitExam';
+  let {executionId, token} = await workflowsCall(req, name);
+  workflowsCallPoll(executionId, res, name, token);
 });
 
 app.post('/retrieveExamTaken', async (req, res) => {
-  let executionResp2 = await workflowsCall(req, 'retrieveExamTaken');
-  res.json(JSON.parse(executionResp2.result));
+  let name = 'retrieveExamTaken';
+  let {executionId, token} = await workflowsCall(req, name);
+  workflowsCallPoll(executionId, res, name, token);
 });
 
 app.post('/listExams', async (req, res) => {
-  let executionResp2 = await workflowsCall(req, 'listExams');
-  res.json(JSON.parse(executionResp2.result));
+  let name = 'listExams';
+  let {executionId, token} = await workflowsCall(req, name);
+  workflowsCallPoll(executionId, res, name, token);
 });
 
 app.get('/listGroups', async (req, res) => {
